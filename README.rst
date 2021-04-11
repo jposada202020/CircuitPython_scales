@@ -3,7 +3,7 @@ Introduction
 
 
 .. image:: https://readthedocs.org/projects/circuitpython-scales/badge/?version=latest
-    :target: https://circuitpython-scales.readthedocs.io/
+    :target: https://circuitpython-scales.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
 
