@@ -34,13 +34,13 @@ or individual libraries can be installed using
 Usage Example
 =============
 
+.. image:: https://raw.githubusercontent.com/jposada202020/CircuitPython_scales/main/docs/scales.png
+
 Please se the ``scales_simpletest.py`` example for initial reference
 
 
 Contributing
 ============
-
-.. image:: https://raw.githubusercontent.com/jposada202020/CircuitPython_scales/main/docs/scales.png
 
 Contributions are welcome! Please read our `Code of Conduct
 <https://github.com/jposada202020/CircuitPython_scales/blob/main/CODE_OF_CONDUCT.md>`_
