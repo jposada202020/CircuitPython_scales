@@ -267,6 +267,13 @@ class Scale(Axes):
         - **range and divisions**: ``limits`` and ``divisions``
 
 
+    .. figure:: scales.png
+      :scale: 100 %
+      :alt: Diagram of scales
+
+      Diagram showing a simple scale.
+
+
     """
 
     def __init__(
