@@ -22,6 +22,7 @@ conversion between range, pixels and values given
 
 # pylint: disable=too-many-lines, too-many-instance-attributes, too-many-arguments
 # pylint: disable=too-many-locals, too-many-statements, invalid-name, import-error
+# pylint: disable=too-few-public-methods
 
 import displayio
 import terminalio
@@ -53,15 +54,15 @@ class Axes(displayio.Group):
     """
 
     def __init__(
-            self,
-            x=0,
-            y=0,
-            limits=(0, 100),
-            divisions=10,
-            direction="horizontal",
-            stroke=3,
-            length=100,
-            color=0x990099,
+        self,
+        x=0,
+        y=0,
+        limits=(0, 100),
+        divisions=10,
+        direction="horizontal",
+        stroke=3,
+        length=100,
+        color=0x990099,
     ):
 
         super().__init__(max_size=1)
@@ -269,19 +270,19 @@ class Scale(Axes):
     """
 
     def __init__(
-            self,
-            x=0,
-            y=0,
-            direction="horizontal",
-            stroke=3,
-            length=100,
-            color=0x990099,
-            width=50,
-            limits=(0, 100),
-            divisions=10,
-            back_color=0x9FFFFF,
-            tick_length=10,
-            tick_stroke=4,
+        self,
+        x=0,
+        y=0,
+        direction="horizontal",
+        stroke=3,
+        length=100,
+        color=0x990099,
+        width=50,
+        limits=(0, 100),
+        divisions=10,
+        back_color=0x9FFFFF,
+        tick_length=10,
+        tick_stroke=4,
     ):
 
         super().__init__(
@@ -341,7 +342,7 @@ class Scale(Axes):
         self.append(back_shape)
 
     def _draw_pointer(
-            self, color=0xFF0000, val_ini=15, space=3, pointer_length=20, pointer_stroke=6
+        self, color=0xFF0000, val_ini=15, space=3, pointer_length=20, pointer_stroke=6
     ):
         pointer_palette = displayio.Palette(2)
         pointer_palette.make_transparent(0)
