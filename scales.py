@@ -20,9 +20,6 @@ conversion between range, pixels and values given
 
 """
 
-# pylint: disable=too-many-lines, too-many-instance-attributes, too-many-arguments
-# pylint: disable=too-many-locals, too-many-statements, invalid-name, import-error
-# pylint: disable=too-few-public-methods
 
 import displayio
 import terminalio
@@ -36,6 +33,8 @@ except ImportError:
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/jposada202020/CircuitPython_scales.git"
+
+# pylint: disable=too-many-instance-attributes, too-many-arguments, too-few-public-methods
 
 
 class Axes(displayio.Group):
@@ -90,6 +89,11 @@ class Axes(displayio.Group):
         self._palette.make_transparent(0)
         self._palette[1] = color
 
+        self._tick_length = None
+        self._tick_stroke = None
+        self.ticks = None
+        self.text_ticks = None
+
     def _draw_line(self):
         """Private function to draw the Axe.
         :return: None
@@ -116,9 +120,9 @@ class Axes(displayio.Group):
             x=0,
             y=-self.y,
         )
+
         self.append(line_vector_shape)
 
-    # pylint: disable=attribute-defined-outside-init
     def _draw_ticks(self, tick_length: int = 10, tick_stroke: int = 4):
         """Private function to draw the ticks
         :param int tick_length: tick length in pixels
@@ -464,7 +468,6 @@ class Scale(Axes):
 
         self.append(pointer_shape)
 
-    # pylint: disable=missing-function-docstring
     def animate_pointer(self, value):
         """Public function to animate the pointer
         :param value: value to draw the pointer
