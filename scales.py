@@ -26,8 +26,13 @@ conversion between range, pixels and values given
 
 import displayio
 import terminalio
-from vectorio import VectorShape, Polygon
 from adafruit_display_text.bitmap_label import Label
+from vectorio import VectorShape, Polygon
+
+try:
+    from typing import Tuple
+except ImportError:
+    pass
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/jposada202020/CircuitPython_scales.git"
@@ -38,7 +43,7 @@ class Axes(displayio.Group):
     :param int x: pixel position, defaults to 0
     :param int y: pixel position, defaults to 0
 
-    :param limits: tuple of value range for the scale. Defaults to (0, 100)
+    :param (int, int) limits: tuple of value range for the scale. Defaults to (0, 100)
     :param int divisions: Divisions number
 
     :param str direction: direction of the scale either ``horizontal`` or ``vertical``
@@ -55,14 +60,14 @@ class Axes(displayio.Group):
 
     def __init__(
         self,
-        x=0,
-        y=0,
-        limits=(0, 100),
-        divisions=10,
-        direction="horizontal",
-        stroke=3,
-        length=100,
-        color=0x990099,
+        x: int = 0,
+        y: int = 0,
+        limits: Tuple[int, int] = (0, 100),
+        divisions: int = 10,
+        direction: str = "horizontal",
+        stroke: int = 3,
+        length: int = 100,
+        color: int = 0x990099,
     ):
 
         super().__init__(max_size=1)
@@ -86,6 +91,9 @@ class Axes(displayio.Group):
         self._palette[1] = color
 
     def _draw_line(self):
+        """Private function to draw the Axe.
+        :return: None
+        """
         if self.direction:
             points = [
                 (self.x, self.y),
@@ -111,7 +119,12 @@ class Axes(displayio.Group):
         self.append(line_vector_shape)
 
     # pylint: disable=attribute-defined-outside-init
-    def _draw_ticks(self, tick_length=10, tick_stroke=4):
+    def _draw_ticks(self, tick_length: int = 10, tick_stroke: int = 4):
+        """Private function to draw the ticks
+        :param int tick_length: tick length in pixels
+        :param int tick_stroke: tick thickness in pixels
+        :return: None
+        """
         self._tick_length = tick_length
         self._tick_stroke = tick_stroke
         self._conversion()
@@ -155,6 +168,9 @@ class Axes(displayio.Group):
                 self.append(tick_shape)
 
     def _conversion(self):
+        """Private function that creates the ticks distance and text.
+        :return: None
+        """
         self.ticks = list()
         self.text_ticks = list()
         espace = round(self.length / self.divisions)
@@ -165,6 +181,9 @@ class Axes(displayio.Group):
             self.text_ticks.append(str(int(self.limits[0] + i * 1 / factorp)))
 
     def _draw_text(self):
+        """Private function to draw the text, uses values found in ``_conversion``
+        :return: None
+        """
         index = 0
         separation = 20
         font_width = 12
@@ -197,7 +216,7 @@ class Scale(Axes):
     :param int length: sacle length in pixels. Defaults to 100
      that extends the touch response boundary, defaults to 0
 
-    :param int color: 24-bit hex value axes line color, Defaults is Purple 0x990099
+    :param int color: 24-bit hex value axes line color, Defaults to purple 0x990099
 
     :param int width: scale width in pixels. Defaults to 50
 
@@ -269,6 +288,7 @@ class Scale(Axes):
 
     .. figure:: scales.png
       :scale: 100 %
+      :align: center
       :alt: Diagram of scales
 
       Diagram showing a simple scale.
@@ -278,18 +298,18 @@ class Scale(Axes):
 
     def __init__(
         self,
-        x=0,
-        y=0,
-        direction="horizontal",
-        stroke=3,
-        length=100,
-        color=0x990099,
-        width=50,
-        limits=(0, 100),
-        divisions=10,
-        back_color=0x9FFFFF,
-        tick_length=10,
-        tick_stroke=4,
+        x: int = 0,
+        y: int = 0,
+        direction: str = "horizontal",
+        stroke: int = 3,
+        length: int = 100,
+        color: int = 0x990099,
+        width: int = 50,
+        limits: Tuple[int, int] = (0, 100),
+        divisions: int = 10,
+        back_color: int = 0x9FFFFF,
+        tick_length: int = 10,
+        tick_stroke: int = 4,
     ):
 
         super().__init__(
@@ -319,6 +339,9 @@ class Scale(Axes):
         self._draw_pointer()
 
     def _draw_background(self):
+        """Private function to draw the background for the scale
+        :return: None
+        """
         back_palette = displayio.Palette(2)
         back_palette.make_transparent(0)
         back_palette[1] = self._back_color
@@ -349,8 +372,22 @@ class Scale(Axes):
         self.append(back_shape)
 
     def _draw_pointer(
-        self, color=0xFF0000, val_ini=15, space=3, pointer_length=20, pointer_stroke=6
+        self,
+        color: int = 0xFF0000,
+        val_ini: int = 15,
+        space: int = 3,
+        pointer_length: int = 20,
+        pointer_stroke: int = 6,
     ):
+        """Private function to initial draw the pointer.
+        :param int color: 24-bit hex value axes line color. Defaults to red 0xFF0000
+        :param int val_ini: initial value to draw the pointer
+        :param int space: separation in pixels from the ticker to the pointer. Defaults to 3
+        :param int pointer_length: length in pixels for the point. Defaults to 20
+        :param int pointer_stroke: pointer thickness in pixels. Defaults to 6
+        :return: None
+        """
+
         pointer_palette = displayio.Palette(2)
         pointer_palette.make_transparent(0)
         pointer_palette[1] = color
@@ -429,6 +466,10 @@ class Scale(Axes):
 
     # pylint: disable=missing-function-docstring
     def animate_pointer(self, value):
+        """Public function to animate the pointer
+        :param value: value to draw the pointer
+        :return: None
+        """
 
         if self.direction:
             self.pointer.points = [
