@@ -20,11 +20,24 @@ conversion between range, pixels and values given
 
 """
 
+################################
+# A scales library for CircuitPython, using ``displayio`` and ``vectorio``
+#
+# Features:
+#  - Customizable range and divisions
+#  - Vertical and Horizontal direction
+#  - Animation to use with different sensor
+#
+# Future options to consider:
+# ---------------------------
+# Different pointers
+# Pointer using real values
 
 import displayio
 import terminalio
 from adafruit_display_text.bitmap_label import Label
-from vectorio import VectorShape, Polygon
+from vectorio import VectorShape, Polygon, Rectangle
+
 
 try:
     from typing import Tuple
@@ -99,30 +112,13 @@ class Axes(displayio.Group):
         :return: None
         """
         if self.direction:
-            points = [
-                (self.x, self.y),
-                (self.x + self.length, self.y),
-                (self.x + self.length, self.y - self.stroke),
-                (self.x, self.y - self.stroke),
-            ]
+            self.append(rectangle_draw(0, 0, self.stroke, self.length, self._palette))
         else:
-            points = [
-                (self.x, self.y),
-                (self.x, self.y - self.length),
-                (self.x + self.stroke, self.y - self.length),
-                (self.x + self.stroke, self.y),
-            ]
+            self.append(
+                rectangle_draw(0, -self.length, self.length, self.stroke, self._palette)
+            )
 
-        line_base = Polygon(points=points)
-        line_vector_shape = VectorShape(
-            shape=line_base,
-            pixel_shader=self._palette,
-            x=0,
-            y=-self.y,
-        )
-
-        self.append(line_vector_shape)
-
+    # pylint: disable=invalid-unary-operand-type
     def _draw_ticks(self, tick_length: int = 10, tick_stroke: int = 4):
         """Private function to draw the ticks
         :param int tick_length: tick length in pixels
@@ -135,41 +131,16 @@ class Axes(displayio.Group):
 
         if self.direction:
             for val in self.ticks[:-1]:
-                tick = Polygon(
-                    points=[
-                        (self.x + val - 1, self.y - self.stroke),
-                        (self.x + val - 1, self.y - self.stroke - self._tick_length),
-                        (self.x + val + 1, self.y - self.stroke - self._tick_length),
-                        (self.x + val + 1, self.y - self.stroke),
-                    ]
+                self.append(
+                    rectangle_draw(
+                        val - 1, -self._tick_length, self._tick_length, 3, self._palette
+                    )
                 )
-                tick_shape = VectorShape(
-                    shape=tick,
-                    pixel_shader=self._palette,
-                    x=0,
-                    y=-self.y,
-                )
-                self.append(tick_shape)
-
         else:
             for val in self.ticks[:-1]:
-                tick = Polygon(
-                    points=[
-                        (self.x + self.stroke, self.y - val - 1),
-                        (self.x + self.stroke + self._tick_length, self.y - val - 1),
-                        (self.x + self.stroke + self._tick_length, self.y - val + 1),
-                        (self.x + self.stroke, self.y - val + 1),
-                    ]
+                self.append(
+                    rectangle_draw(0, -val, 3, self._tick_length, self._palette)
                 )
-
-                tick_shape = VectorShape(
-                    shape=tick,
-                    pixel_shader=self._palette,
-                    x=0,
-                    y=-self.y,
-                )
-
-                self.append(tick_shape)
 
     def _conversion(self):
         """Private function that creates the ticks distance and text.
@@ -193,14 +164,14 @@ class Axes(displayio.Group):
         font_width = 12
         if self.direction:
             for tick_text in self.text_ticks[:-1]:
-                dist_x = self.x + self.ticks[index] - font_width // 2
+                dist_x = self.ticks[index] - font_width // 2
                 dist_y = separation // 2
                 tick_label = Label(terminalio.FONT, text=tick_text, x=dist_x, y=dist_y)
                 self.append(tick_label)
                 index = index + 1
         else:
             for tick_text in self.text_ticks[:-1]:
-                dist_x = self.x - separation
+                dist_x = -separation
                 dist_y = -self.ticks[index]
                 tick_label = Label(terminalio.FONT, text=tick_text, x=dist_x, y=dist_y)
                 self.append(tick_label)
@@ -351,29 +322,13 @@ class Scale(Axes):
         back_palette[1] = self._back_color
 
         if self.direction:
-            points = [
-                (self.x, self.y),
-                (self.x + self.length, self.y),
-                (self.x + self.length, self.y - self._width),
-                (self.x, self.y - self._width),
-            ]
+            self.append(
+                rectangle_draw(0, -self._width, self._width, self.length, back_palette)
+            )
         else:
-
-            points = [
-                (self.x + self.stroke, self.y),
-                (self.x + self._width, self.y),
-                (self.x + self._width, self.y - self.length),
-                (self.x + self.stroke, self.y - self.length),
-            ]
-
-        background = Polygon(points=points)
-        back_shape = VectorShape(
-            shape=background,
-            pixel_shader=back_palette,
-            x=0,
-            y=-self.y,
-        )
-        self.append(back_shape)
+            self.append(
+                rectangle_draw(0, -self.length, self.length, self._width, back_palette)
+            )
 
     def _draw_pointer(
         self,
@@ -433,27 +388,25 @@ class Scale(Axes):
             self.pointer = Polygon(
                 points=[
                     (
-                        self.x + self.stroke + self._tick_length + space,
+                        self.stroke + self._tick_length + space,
                         self.y + self._pointer_stroke // 2 - val_ini,
                     ),
                     (
-                        self.x
-                        + self.stroke
+                        self.stroke
                         + self._tick_length
                         + self._space
                         + self._pointer_length,
                         self.y + self._pointer_stroke // 2 - val_ini,
                     ),
                     (
-                        self.x
-                        + self.stroke
+                        self.stroke
                         + self._tick_length
                         + self._space
                         + self._pointer_length,
                         self.y - self._pointer_stroke // 2 - val_ini,
                     ),
                     (
-                        self.x + self.stroke + self._tick_length + self._space,
+                        self.stroke + self._tick_length + self._space,
                         self.y - self._pointer_stroke // 2 - val_ini,
                     ),
                 ]
@@ -470,8 +423,10 @@ class Scale(Axes):
 
     def animate_pointer(self, value):
         """Public function to animate the pointer
+
         :param value: value to draw the pointer
         :return: None
+
         """
 
         if self.direction:
@@ -504,27 +459,44 @@ class Scale(Axes):
         else:
             self.pointer.points = [
                 (
-                    self.x + self.stroke + self._tick_length + self._space,
+                    self.stroke + self._tick_length + self._space,
                     self.y + self._pointer_stroke // 2 - value,
                 ),
                 (
-                    self.x
-                    + self.stroke
+                    self.stroke
                     + self._tick_length
                     + self._space
                     + self._pointer_length,
                     self.y + self._pointer_stroke // 2 - value,
                 ),
                 (
-                    self.x
-                    + self.stroke
+                    self.stroke
                     + self._tick_length
                     + self._space
                     + self._pointer_length,
                     self.y - self._pointer_stroke // 2 - value,
                 ),
                 (
-                    self.x + self.stroke + self._tick_length + self._space,
+                    self.stroke + self._tick_length + self._space,
                     self.y - self._pointer_stroke // 2 - value,
                 ),
             ]
+
+
+# pylint: disable=invalid-name
+def rectangle_draw(x0: int, y0: int, height: int, width: int, palette):
+    """rectangle_draw function
+    Draws a rectangle using or ``vectorio.rectangle``
+
+    :param int x0: rectangle lower corner x position
+    :param int y0: rectangle lower corner y position
+
+    :param int width: rectangle upper corner x position
+    :param int height: rectangle upper corner y position
+
+    :param palette: palette object to be used to draw the rectangle
+
+    """
+
+    rect = Rectangle(width, height)
+    return VectorShape(shape=rect, pixel_shader=palette, x=x0, y=y0)
