@@ -21,7 +21,7 @@ conversion between range, pixels and values given
 """
 
 ################################
-# A scales library for CircuitPython, using ``displayio`` and ``vectorio``
+# A scales library for CircuitPython, using `displayio`` and `vectorio``
 #
 # Features:
 #  - Customizable range and divisions
@@ -52,21 +52,20 @@ __repo__ = "https://github.com/jposada202020/CircuitPython_scales.git"
 
 class Axes(displayio.Group):
     """
-    :param int x: pixel position, defaults to 0
-    :param int y: pixel position, defaults to 0
+    :param int x: pixel position. Defaults to :const:`0`
+    :param int y: pixel position. Defaults to :const:`0`
 
-    :param (int, int) limits: tuple of value range for the scale. Defaults to (0, 100)
+    :param int,int limits: tuple of value range for the scale. Defaults to (0, 100)
     :param int divisions: Divisions number
 
-    :param str direction: direction of the scale either ``horizontal`` or ``vertical``
-     defaults to ``horizontal``
+    :param str direction: direction of the scale either :attr:`horizontal` or :attr:`vertical`
+     defaults to :attr:`horizontal`
 
-    :param int stroke: width in pixels of the scale axes. Defaults to 3
+    :param int stroke: width in pixels of the scale axes. Defaults to :const:`3`
 
-    :param int length: scale length in pixels. Defaults to 100
-     that extends the touch response boundary, defaults to 0
+    :param int length: scale length in pixels. Defaults to :const:`100`
 
-    :param int color: 24-bit hex value axes line color, Defaults is Purple 0x990099
+    :param int color: 24-bit hex value axes line color, Defaults to Purple :const:`0x990099`
 
     """
 
@@ -180,33 +179,34 @@ class Axes(displayio.Group):
 
 class Scale(Axes):
     """
-    :param int x: pixel position, defaults to 0
-    :param int y: pixel position, defaults to 0
+    :param int x: pixel position. Defaults to :const:`0`
+    :param int y: pixel position. Defaults to :const:`0`
 
-    :param str direction: direction of the scale either ``horizontal`` or ``vertical``
-     defaults to ``horizontal``
+    :param str direction: direction of the scale either :attr:`horizontal` or :attr:`vertical`
+     defaults to :attr:`horizontal`
 
     :param int stroke: width in pixels of the scale axes. Defaults to 3
 
-    :param int length: sacle length in pixels. Defaults to 100
+    :param int length: scale length in pixels. Defaults to 100
      that extends the touch response boundary, defaults to 0
 
-    :param int color: 24-bit hex value axes line color, Defaults to purple 0x990099
+    :param int color: 24-bit hex value axes line color, Defaults to purple :const:`0x990099`
 
-    :param int width: scale width in pixels. Defaults to 50
+    :param int width: scale width in pixels. Defaults to :const:`50`
 
-    :param limits: tuple of value range for the scale. Defaults to (0, 100)
+    :param limits: tuple of value range for the scale. Defaults to :const:`(0, 100)`
     :param int divisions: Divisions number
 
-    :param int back_color: 24-bit hex value axes line color, Defaults is Light Blue 0x9FFFFF
+    :param int back_color: 24-bit hex value axes line color.
+     Defaults to Light Blue :const:`0x9FFFFF`
 
-    :param int tick_length: Scale tick length in pixels. Defaults to 10
-    :param int tick_stroke: Scale tick width in pixels. Defaults to 4
+    :param int tick_length: Scale tick length in pixels. Defaults to :const:`10`
+    :param int tick_stroke: Scale tick width in pixels. Defaults to :const:`4`
 
 
     **Quickstart: Importing and using Scales**
 
-    Here is one way of importing the ``Scales`` class so you can use it as
+    Here is one way of importing the `Scale` class so you can use it as
     the name ``my_scale``:
 
     .. code-block:: python
@@ -227,7 +227,7 @@ class Scale(Axes):
         display.show(my_scale)
 
     If you want to have multiple display elements, you can create a group and then
-    append the scale and the other elements to the group.  Then, you can add the full
+    append the scale and the other elements to the group. Then, you can add the full
     group to the display as in this example:
 
     .. code-block:: python
@@ -245,20 +245,20 @@ class Scale(Axes):
 
     **Summary: Slider Features and input variables**
 
-    The ``Scale`` class has some options for controlling its position, visible appearance,
+    The `Scale` class has some options for controlling its position, visible appearance,
     and value through a collection of input variables:
 
-        - **position**: ``x``, ``y``
+        - **position**: :attr:`x``, :attr:`y`
 
-        - **size**: ``length`` and ``width``
+        - **size**: :attr:`length` and :attr:`width`
 
-        - **color**: ``color``, ``back_color``
+        - **color**: :attr:`color`, :attr:`back_color`
 
-        - **linewidths**: ``stroke`` and ``tick_stroke``
+        - **linewidths**: :attr:`stroke` and :attr:`tick_stroke`
 
-        - **value**: Set ``value`` to the initial value (True or False)
+        - **value**: Set :attr:`value` to the initial value (`True` or `False`)
 
-        - **range and divisions**: ``limits`` and ``divisions``
+        - **range and divisions**: :attr:`limits` and :attr:`divisions`
 
 
     .. figure:: scales.png
@@ -339,12 +339,16 @@ class Scale(Axes):
         pointer_stroke: int = 6,
     ):
         """Private function to initial draw the pointer.
-        :param int color: 24-bit hex value axes line color. Defaults to red 0xFF0000
+
+        :param int color: 24-bit hex value axes line color. Defaults to red :const:`0xFF0000`
         :param int val_ini: initial value to draw the pointer
-        :param int space: separation in pixels from the ticker to the pointer. Defaults to 3
-        :param int pointer_length: length in pixels for the point. Defaults to 20
-        :param int pointer_stroke: pointer thickness in pixels. Defaults to 6
+        :param int space: separation in pixels from the ticker to the pointer.
+         Defaults to :const:`3`
+        :param int pointer_length: length in pixels for the point. Defaults to :const:`20`
+        :param int pointer_stroke: pointer thickness in pixels. Defaults to :const:`6`
+
         :return: None
+
         """
 
         pointer_palette = displayio.Palette(2)
@@ -486,7 +490,8 @@ class Scale(Axes):
 # pylint: disable=invalid-name
 def rectangle_draw(x0: int, y0: int, height: int, width: int, palette):
     """rectangle_draw function
-    Draws a rectangle using or ``vectorio.rectangle``
+
+    Draws a rectangle using or `vectorio.Rectangle`
 
     :param int x0: rectangle lower corner x position
     :param int y0: rectangle lower corner y position
@@ -494,7 +499,7 @@ def rectangle_draw(x0: int, y0: int, height: int, width: int, palette):
     :param int width: rectangle upper corner x position
     :param int height: rectangle upper corner y position
 
-    :param palette: palette object to be used to draw the rectangle
+    :param `~displayio.Palette` palette: palette object to be used to draw the rectangle
 
     """
 
