@@ -6,8 +6,10 @@
 This is a basic demonstration of a Scale Class.
 """
 
+import time
 import board
 from scales import Scale
+
 
 display = board.DISPLAY
 
@@ -22,7 +24,8 @@ my_scale = Scale(
 
 
 display.show(my_scale)
+values = [56, 58, 60, 65, 63, 60, 56, 54, 53, 42, 43, 44, 45, 52, 54]
 
-
-while True:
-    pass
+for val in values:
+    my_scale.animate_pointer(val)
+    time.sleep(2)
