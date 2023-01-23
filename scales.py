@@ -145,8 +145,8 @@ class Axes(displayio.Group):
         """Private function that creates the ticks distance and text.
         :return: None
         """
-        self.ticks = list()
-        self.text_ticks = list()
+        self.ticks = []
+        self.text_ticks = []
         espace = round(self.length / self.divisions)
         rang_discrete = self.limits[1] - self.limits[0]
         factorp = self.length / rang_discrete
