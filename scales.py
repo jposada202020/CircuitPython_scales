@@ -36,8 +36,7 @@ conversion between range, pixels and values given
 import displayio
 import terminalio
 from adafruit_display_text.bitmap_label import Label
-from vectorio import VectorShape, Polygon, Rectangle
-
+from vectorio import Polygon, Rectangle
 
 try:
     from typing import Tuple
@@ -46,6 +45,7 @@ except ImportError:
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/jposada202020/CircuitPython_scales.git"
+
 
 # pylint: disable=too-many-instance-attributes, too-many-arguments, too-few-public-methods
 
@@ -81,7 +81,7 @@ class Axes(displayio.Group):
         color: int = 0x990099,
     ):
 
-        super().__init__(max_size=1)
+        super().__init__()
 
         self.x = x
         self.y = y
@@ -360,70 +360,68 @@ class Scale(Axes):
         self._pointer_stroke = pointer_stroke
 
         if self.direction:
-            self.pointer = Polygon(
-                points=[
-                    (
-                        self.x - self._pointer_stroke // 2 + val_ini,
-                        self.y - self.stroke - self._tick_length - self._space,
-                    ),
-                    (
-                        self.x - self._pointer_stroke // 2 + val_ini,
-                        self.y
-                        - self.stroke
-                        - self._tick_length
-                        - self._space
-                        - self._pointer_length,
-                    ),
-                    (
-                        self.x + self._pointer_stroke // 2 + val_ini,
-                        self.y
-                        - self.stroke
-                        - self._tick_length
-                        - self._space
-                        - self._pointer_length,
-                    ),
-                    (
-                        self.x + self._pointer_stroke // 2 + val_ini,
-                        self.y - self.stroke - self._tick_length - self._space,
-                    ),
-                ]
-            )
-        else:
-            self.pointer = Polygon(
-                points=[
-                    (
-                        self.stroke + self._tick_length + space,
-                        self.y + self._pointer_stroke // 2 - val_ini,
-                    ),
-                    (
-                        self.stroke
-                        + self._tick_length
-                        + self._space
-                        + self._pointer_length,
-                        self.y + self._pointer_stroke // 2 - val_ini,
-                    ),
-                    (
-                        self.stroke
-                        + self._tick_length
-                        + self._space
-                        + self._pointer_length,
-                        self.y - self._pointer_stroke // 2 - val_ini,
-                    ),
-                    (
-                        self.stroke + self._tick_length + self._space,
-                        self.y - self._pointer_stroke // 2 - val_ini,
-                    ),
-                ]
-            )
+            points = [
+                (
+                    self.x - self._pointer_stroke // 2 + val_ini,
+                    self.y - self.stroke - self._tick_length - self._space,
+                ),
+                (
+                    self.x - self._pointer_stroke // 2 + val_ini,
+                    self.y
+                    - self.stroke
+                    - self._tick_length
+                    - self._space
+                    - self._pointer_length,
+                ),
+                (
+                    self.x + self._pointer_stroke // 2 + val_ini,
+                    self.y
+                    - self.stroke
+                    - self._tick_length
+                    - self._space
+                    - self._pointer_length,
+                ),
+                (
+                    self.x + self._pointer_stroke // 2 + val_ini,
+                    self.y - self.stroke - self._tick_length - self._space,
+                ),
+            ]
 
-        pointer_shape = VectorShape(
-            shape=self.pointer,
+        else:
+            points = [
+                (
+                    self.stroke + self._tick_length + space,
+                    self.y + self._pointer_stroke // 2 - val_ini,
+                ),
+                (
+                    self.stroke
+                    + self._tick_length
+                    + self._space
+                    + self._pointer_length,
+                    self.y + self._pointer_stroke // 2 - val_ini,
+                ),
+                (
+                    self.stroke
+                    + self._tick_length
+                    + self._space
+                    + self._pointer_length,
+                    self.y - self._pointer_stroke // 2 - val_ini,
+                ),
+                (
+                    self.stroke + self._tick_length + self._space,
+                    self.y - self._pointer_stroke // 2 - val_ini,
+                ),
+            ]
+
+        self.pointer = Polygon(
             pixel_shader=pointer_palette,
+            points=points,
             x=0,
             y=-self.y,
+            color_index=1,
         )
 
-        self.append(pointer_shape)
+        self.append(self.pointer)
 
     def animate_pointer(self, value):
         """Public function to animate the pointer
@@ -503,5 +501,6 @@ def rectangle_draw(x0: int, y0: int, height: int, width: int, palette):
 
     """
 
-    rect = Rectangle(width, height)
-    return VectorShape(shape=rect, pixel_shader=palette, x=x0, y=y0)
+    return Rectangle(
+        pixel_shader=palette, width=width, height=height, x=x0, y=y0, color_index=1
+    )
