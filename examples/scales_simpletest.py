@@ -6,9 +6,10 @@
 This is a basic demonstration of a Scale Class.
 """
 
+import time
 import board
 from scales import Scale
-import time
+
 
 display = board.DISPLAY
 
