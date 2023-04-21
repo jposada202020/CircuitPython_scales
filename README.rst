@@ -11,6 +11,13 @@ Introduction
     :target: https://github.com/jposada202020/CircuitPython_scales/actions
     :alt: Build Status
 
+.. image:: https://img.shields.io/pypi/v/circuitpython-scales.svg
+    :alt: latest version on PyPI
+    :target: https://pypi.python.org/pypi/circuitpython-scales
+
+.. image:: https://static.pepy.tech/personalized-badge/circuitpython-scales?period=total&units=international_system&left_color=grey&right_color=blue&left_text=Pypi%20Downloads
+    :alt: Total PyPI downloads
+    :target: https://pepy.tech/project/circuitpython-scales
 
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/psf/black
