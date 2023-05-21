@@ -21,7 +21,6 @@ extensions = [
     "sphinx.ext.todo",
 ]
 
-# TODO: Please Read!
 # Uncomment the below if you use native CircuitPython modules such as
 # digitalio, micropython and busio. List the modules you use. Without it, the
 # autodoc module docs will fail to generate with a warning.
@@ -32,11 +31,12 @@ autodoc_mock_imports = [
     "terminalio",
     "adafruit_display_text",
     "displayio",
+    "ulab",
 ]
 
 
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/3.4", None),
+    "python": ("https://docs.python.org/3", None),
     "CircuitPython": ("https://circuitpython.readthedocs.io/en/latest/", None),
 }
 
@@ -53,7 +53,7 @@ master_doc = "index"
 
 # General information about the project.
 project = " CircuitPython scales Library"
-copyright = "2021 Jose David M."
+copyright = "2021-2023 Jose David M."
 author = "Jose David M."
 
 # The version info for the project you're documenting, acts as replacement for
@@ -95,12 +95,8 @@ add_function_parentheses = True
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "sphinx"
 
-# If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
-
-# If this is True, todo emits a warning for each TODO entries. The default is False.
-todo_emit_warnings = True
-
+todo_emit_warnings = False
 napoleon_numpy_docstring = False
 
 # -- Options for HTML output ----------------------------------------------

@@ -22,20 +22,7 @@ Table of Contents
     api
 
 .. toctree::
-    :caption: Tutorials
-
-.. toctree::
     :caption: Other Links
 
     Download <https://github.com/jposada202020/CircuitPython_scales/releases/latest>
     CircuitPython Reference Documentation <https://circuitpython.readthedocs.io>
-    Discord Chat <https://adafru.it/discord>
-    Adafruit Learning System <https://learn.adafruit.com>
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
