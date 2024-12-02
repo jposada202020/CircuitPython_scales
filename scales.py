@@ -45,7 +45,7 @@ __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/jposada202020/CircuitPython_scales.git"
 
 # pylint: disable=too-many-arguments, too-few-public-methods,too-many-instance-attributes
-# pylint: disable=invalid-unary-operand-type
+# pylint: disable=invalid-unary-operand-type, too-many-positional-arguments
 class Axes(displayio.Group):
     """
     :param int x: pixel position. Defaults to :const:`0`
